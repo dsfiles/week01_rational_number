@@ -1,0 +1,107 @@
+public class MyClass {
+    public static void main(String args[]) {
+        System.out.println("Hello, World!");
+        RationalNumber r = new RationalNumber();
+        System.out.println(r.numerator);
+        System.out.println(r.denominator);
+        System.out.println(r);
+        RationalNumber r2 = new RationalNumber(3,6);
+        r2.reduce();
+        System.out.println(r2);
+        RationalNumber r3 = new RationalNumber(1,-12);
+        RationalNumber r4 = new RationalNumber(2,3);
+        System.out.println(RationalNumber.add(r3,r4));
+        System.out.println(r3.add2(r4));
+        System.out.println(RationalNumber.multiply(r3, r4));
+        System.out.println(RationalNumber.divide(r3, r4));
+    }
+}
+
+
+public class RationalNumber {
+	public int numerator, denominator;
+	public RationalNumber(){
+		numerator=0;
+		denominator=1;
+	}
+	public RationalNumber(int numerator, int denominator) {
+		if (denominator==0) throw new IllegalArgumentException("Den can't be zero!");
+		this.numerator=numerator;
+		this.denominator=denominator;
+	}
+
+	public int getDenominator(){
+		return denominator;
+	}
+	
+	public int getNumerator(){
+		return numerator;
+	}
+	
+	public String toString(){
+	    return numerator + "/" + denominator;
+	}
+	
+	public void reduce(){
+	    if (this.denominator < 0)
+	    {
+	        this.numerator *= -1;
+	        this.denominator *=-1;
+        }
+	    int g = gcd(numerator, denominator);
+	    numerator /= g;
+	    denominator /= g;
+	}
+	
+	public static int gcd(int x, int y) {
+        if (x < 0 || y < 0) {
+            // recursive case with negative value(s)
+            return gcd(Math.abs(x), Math.abs(y));
+        } else if (y == 0) {
+        // base case with y == 0
+            return x;
+        } else {
+            // recursive case with y > 0
+            return gcd(y, x % y);
+        }
+	} 
+    
+    // add two rationals and return a new rational
+        public static RationalNumber add(RationalNumber r1, RationalNumber r2)
+        {
+            int n = r1.numerator * r2.denominator + r2.numerator * r1.denominator;
+            int d = r1.denominator * r2.denominator;
+            RationalNumber r = new RationalNumber(n, d);
+            r.reduce();
+            return r;
+        }
+ 	   
+        // add a rational to the current ratinal and return the sum as a new rational
+        public RationalNumber add2(RationalNumber r)
+        {
+            int n = this.numerator * r.denominator + r.numerator * this.denominator;
+            int d = this.denominator * r.denominator;
+            RationalNumber r_sum = new RationalNumber(n, d);
+            r_sum.reduce();
+            return r;
+        }
+        
+        public static RationalNumber multiply(RationalNumber r1, RationalNumber r2)
+        {
+            int n = r1.numerator * r2.numerator;
+            int d = r1.denominator * r2.denominator;
+            RationalNumber r = new RationalNumber(n, d);
+            r.reduce();
+            return r;
+        }
+
+        public static RationalNumber divide(RationalNumber r1, RationalNumber r2)
+        {
+            int n = r1.numerator * r2.denominator;
+            int d = r1.denominator * r2.numerator;
+            RationalNumber r = new RationalNumber(n, d);
+            r.reduce();
+            return r;
+        }
+	}
+}
